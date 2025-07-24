@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tasks - FahamAI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#0c0c1c] text-white font-sans min-h-screen flex flex-col items-center py-6">
+
+  <h1 class="text-xl font-bold neon-text mb-4">Tasks & Missions</h1>
+
+  <div class="w-[360px] space-y-4">
+
+    <!-- Task Progress Overview -->
+    <div class="bg-gray-800 rounded-xl p-4 border border-purple-700">
+      <p class="text-sm text-purple-400 mb-1">Eligibility Progress</p>
+      <p id="progressText" class="text-sm text-gray-300 mb-2">0 / 20 Tasks Completed</p>
+      <div class="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+        <div id="progressBar" class="bg-purple-500 h-2 rounded-full" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Tasks List -->
+    <div id="tasksContainer" class="space-y-4"></div>
+
+    <!-- Back Button -->
+    <a href="/dashboard" class="block bg-gray-700 hover:bg-gray-800 rounded-xl py-3 text-center font-bold transition mt-4">
+      Back to Dashboard
+    </a>
+
+  </div>
+
+<script>
+  const tasks = [
+    { id: 1, name: "Daily Check-in", icon: "checkin.png", completed: false },
+    { id: 2, name: "Follow on Twitter", icon: "twitter.png", completed: true },
+    { id: 3, name: "Join Telegram", icon: "telegram.png", completed: false }
+  ];
+
+  function loadTasks() {
+    const container = document.getElementById('tasksContainer');
+    container.innerHTML = '';
+
+    let completedCount = 0;
+
+    tasks.forEach(task => {
+      if (task.completed) completedCount++;
+
+      const html = `
+        <div class="bg-gray-800 rounded-xl p-4 flex items-center justify-between border border-purple-700">
+          <div class="flex items-center space-x-3">
+            <img src="/static/icons/${task.icon}" class="w-8 h-8">
+            <span>${task.name}</span>
+          </div>
+          <button onclick="claimTask(${task.id})"
+            class="text-sm font-bold px-3 py-1 rounded ${task.completed ? 'bg-green-600' : 'bg-purple-700 hover:bg-purple-800'}"
+            ${task.completed ? 'disabled' : ''}>
+            ${task.completed ? 'Completed' : 'Claim'}
+          </button>
+        </div>
+      `;
+
+      container.innerHTML += html;
+    });
+
+    const percent = Math.round((completedCount / tasks.length) * 100);
+    document.getElementById('progressText').innerText = `${completedCount} / ${tasks.length} Tasks Completed`;
+    document.getElementById('progressBar').style.width = `${percent}%`;
+  }
+
+  function claimTask(taskId) {
+    alert('Task Claimed! (Simulated)');
+    const task = tasks.find(t => t.id === taskId);
+    task.completed = true;
+    loadTasks();
+  }
+
+  loadTasks();
+</script>
+
+</body>
+</html>

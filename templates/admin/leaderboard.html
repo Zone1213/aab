@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leaderboard Control - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col items-center py-8">
+
+  <h1 class="text-xl font-bold text-purple-400 mb-4">Leaderboard Control</h1>
+
+  <div class="w-[360px] space-y-6">
+
+    <div class="bg-gray-800 rounded-xl p-4 text-center border border-purple-700">
+      <p class="text-sm text-gray-400 mb-2">Last Leaderboard Refresh:</p>
+      <p id="lastRefresh" class="font-bold">Unknown</p>
+    </div>
+
+    <button onclick="refreshLeaderboard()" class="w-full bg-purple-700 rounded-xl py-3 font-bold hover:bg-purple-900 transition">
+      Refresh Leaderboard Now
+    </button>
+
+    <a href="/admin/dashboard" class="block bg-gray-700 hover:bg-gray-800 rounded-xl py-3 text-center font-bold transition mt-6">
+      Back to Admin Dashboard
+    </a>
+
+  </div>
+
+<script>
+  function refreshLeaderboard() {
+    const now = new Date().toLocaleString();
+    document.getElementById('lastRefresh').innerText = now;
+    alert('Leaderboard refresh request sent to server.');
+    // API POST request to /admin/leaderboard/refresh (actual backend action)
+  }
+
+  document.getElementById('lastRefresh').innerText = 'Never';
+</script>
+
+</body>
+</html>

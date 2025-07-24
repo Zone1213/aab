@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Referral Commissions - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col items-center py-8">
+
+  <h1 class="text-xl font-bold text-purple-400 mb-4">Referral Commissions</h1>
+
+  <div class="w-[360px] space-y-4">
+
+    <input type="number" id="level1" placeholder="Level 1 Commission (USDT)" class="w-full px-4 py-2 rounded bg-gray-800 border border-purple-600 text-white">
+
+    <input type="number" id="level2" placeholder="Level 2 Commission (USDT)" class="w-full px-4 py-2 rounded bg-gray-800 border border-purple-600 text-white">
+
+    <input type="number" id="level3" placeholder="Level 3 Commission (USDT)" class="w-full px-4 py-2 rounded bg-gray-800 border border-purple-600 text-white">
+
+    <button onclick="saveCommissions()" class="w-full bg-purple-700 rounded-xl py-3 font-bold hover:bg-purple-900 transition">
+      Save Referral Commissions
+    </button>
+
+    <a href="/admin/dashboard" class="block bg-gray-700 hover:bg-gray-800 rounded-xl py-3 text-center font-bold transition mt-6">
+      Back to Admin Dashboard
+    </a>
+
+  </div>
+
+<script>
+  function saveCommissions() {
+    const level1 = document.getElementById('level1').value;
+    const level2 = document.getElementById('level2').value;
+    const level3 = document.getElementById('level3').value;
+
+    alert(`Referral Commissions Updated:
+- Level 1: ${level1} USDT
+- Level 2: ${level2} USDT
+- Level 3: ${level3} USDT`);
+
+    // API POST request to /admin/referral_commission/update can be triggered here
+  }
+</script>
+
+</body>
+</html>

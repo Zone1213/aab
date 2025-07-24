@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Referral System - FahamAI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#0c0c1c] text-white font-sans min-h-screen flex flex-col items-center py-6">
+
+  <h1 class="text-xl font-bold neon-text mb-4">Referral Program</h1>
+
+  <div class="w-[360px] space-y-4">
+
+    <div class="bg-gray-800 rounded-xl p-4 border border-purple-700">
+      <p class="text-sm text-purple-400 mb-2">Your Referral Link</p>
+      <div id="referralLink" class="bg-[#1a1a2d] text-sm text-gray-300 px-2 py-1 rounded-xl truncate">
+        https://fahamai.com/referral/abc123
+      </div>
+      <button onclick="copyReferral()" class="w-full bg-purple-700 rounded-xl py-2 font-bold hover:bg-purple-900 transition mt-3">
+        Copy Link
+      </button>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl p-4 border border-purple-700">
+      <p class="text-sm text-purple-400 mb-2">Your Referral Stats</p>
+      <p>Total Referrals: <span id="referralCount">0</span></p>
+      <p>Total Referral Income: <span id="referralIncome">$0.00</span> USDT</p>
+    </div>
+
+    <a href="/dashboard" class="block bg-gray-700 hover:bg-gray-800 rounded-xl py-3 text-center font-bold transition mt-4">
+      Back to Dashboard
+    </a>
+
+  </div>
+
+<script>
+  function copyReferral() {
+    const link = document.getElementById("referralLink").innerText;
+    navigator.clipboard.writeText(link);
+    alert("Referral link copied!");
+  }
+</script>
+
+</body>
+</html>

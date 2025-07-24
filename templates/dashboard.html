@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FahamAI Wallet</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glass {
+      background: rgba(18, 18, 30, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 15px rgba(150, 0, 255, 0.4);
+      backdrop-filter: blur(20px);
+    }
+    .neon-text {
+      background: linear-gradient(90deg, #ff00ff, #00f0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-[#0c0c1c] font-sans text-white flex items-center justify-center min-h-screen">
+
+  <div class="glass rounded-3xl w-[360px] p-6">
+
+    <h1 class="text-center text-2xl font-bold neon-text mb-6">FahamAI Wallet</h1>
+
+    <!-- Balance -->
+    <div class="rounded-2xl border border-purple-600 py-6 px-4 text-center mb-6">
+      <div class="flex justify-center items-center text-4xl font-bold text-cyan-300">
+        <img src="/static/icons/usdt.png" alt="USDT" class="w-6 h-6 mr-2">
+        <span id="balance">$0.00</span>
+      </div>
+      <div class="text-sm text-gray-400 mt-2">USDT Balance</div>
+    </div>
+
+    <!-- Send / Receive -->
+    <div class="flex justify-between mb-6">
+      <button onclick="sendMoney()" class="flex-1 bg-[#1b1b2f] rounded-xl py-2 font-bold mx-1 hover:bg-purple-700 transition">Send</button>
+      <button onclick="receiveMoney()" class="flex-1 bg-[#1b1b2f] rounded-xl py-2 font-bold mx-1 hover:bg-purple-700 transition">Receive</button>
+    </div>
+
+    <!-- Referral Link -->
+    <div class="rounded-xl border border-purple-600 p-4 mb-4">
+      <div class="text-sm text-purple-400 mb-1">Your Referral Link</div>
+      <div id="referralLink" class="bg-[#0a0a1c] text-sm text-gray-300 px-2 py-1 rounded-xl truncate">
+        Loading...
+      </div>
+      <button onclick="copyReferral()" class="mt-2 w-full bg-purple-800 rounded-xl py-2 font-bold hover:bg-purple-900 transition">Copy</button>
+    </div>
+
+    <!-- Airdrop Eligibility Progress -->
+    <div class="rounded-xl border border-purple-600 p-4 mb-4">
+      <div class="text-sm text-purple-400 mb-2 font-bold">Airdrop Eligibility Progress</div>
+      <div id="eligibilityProgress"></div>
+    </div>
+
+    <!-- Leaderboard Shortcut -->
+    <button onclick="goToLeaderboard()" class="w-full bg-purple-700 rounded-xl py-3 font-bold hover:bg-purple-900 transition mb-6">
+      View Leaderboard
+    </button>
+
+    <!-- Bottom Navigation -->
+    <div class="flex justify-between border-t border-gray-700 pt-4 text-gray-400 text-sm">
+      <div class="flex flex-col items-center">
+        <img src="/static/icons/home.png" class="w-5 h-5 mb-1">
+        Home
+      </div>
+      <div class="flex flex-col items-center">
+        <img src="/static/icons/tasks.png" class="w-5 h-5 mb-1">
+        Tasks
+      </div>
+      <div class="flex flex-col items-center">
+        <img src="/static/icons/referral.png" class="w-5 h-5 mb-1">
+        Referral
+      </div>
+      <div class="flex flex-col items-center">
+        <img src="/static/icons/profile.png" class="w-5 h-5 mb-1">
+        Profile
+      </div>
+      <div class="flex flex-col items-center">
+        <img src="/static/icons/settings.png" class="w-5 h-5 mb-1">
+        Settings
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  const username = "{{ telegram_username }}";
+
+  function sendMoney() {
+    window.location.href = "/send";
+  }
+
+  function receiveMoney() {
+    window.location.href = "/receive";
+  }
+
+  function copyReferral() {
+    const refLink = document.getElementById("referralLink").innerText;
+    navigator.clipboard.writeText(refLink);
+    alert("Referral link copied!");
+  }
+
+  function goToLeaderboard() {
+    window.location.href = "/leaderboard";
+  }
+
+  function loadDashboard() {
+    fetch(`/user/get_dashboard_data?username=${username}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("balance").innerText = "$" + data.wallet.toFixed(2);
+        document.getElementById("referralLink").innerText = data.ref_link;
+
+        // Airdrop Eligibility Progress
+        let html = '';
+        data.eligibility.forEach(item => {
+          html += `
+            <div class="mb-2">
+              <div class="flex justify-between text-sm">
+                <span>${item.name}</span>
+                <span>${item.progress} / ${item.required}</span>
+              </div>
+              <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                <div class="${item.percent === 100 ? 'bg-green-400' : 'bg-purple-500'} h-2 rounded-full" style="width:${item.percent}%;"></div>
+              </div>
+            </div>
+          `;
+        });
+        document.getElementById('eligibilityProgress').innerHTML = html;
+      })
+      .catch(() => alert("Failed to load data. Please try again."));
+  }
+
+  loadDashboard();
+  setInterval(loadDashboard, 5000); // Auto-refresh every 5 seconds
+</script>
+
+</body>
+</html>

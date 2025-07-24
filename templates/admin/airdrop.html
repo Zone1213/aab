@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Airdrop Settings - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col items-center py-8">
+
+  <h1 class="text-xl font-bold text-purple-400 mb-4">Airdrop Settings</h1>
+
+  <div class="w-[360px] space-y-4">
+
+    <input type="number" id="minSends" placeholder="Minimum Unique Sends" class="w-full px-4 py-2 rounded bg-gray-800 border border-purple-600 text-white">
+
+    <input type="number" id="referralIncome" placeholder="Referral Income (USDT)" class="w-full px-4 py-2 rounded bg-gray-800 border border-purple-600 text-white">
+
+    <input type="number" id="activeReferrals" placeholder="Active Referrals Required" class="w-full px-4 py-2 rounded bg-gray-800 border border-purple-600 text-white">
+
+    <input type="number" id="taskEarnings" placeholder="Task Earnings (USDT)" class="w-full px-4 py-2 rounded bg-gray-800 border border-purple-600 text-white">
+
+    <div class="flex items-center justify-between bg-gray-800 rounded px-4 py-2 border border-purple-600">
+      <span>NFT Mint Required</span>
+      <input type="checkbox" id="nftRequired">
+    </div>
+
+    <button onclick="saveSettings()" class="w-full bg-purple-700 rounded-xl py-3 font-bold hover:bg-purple-900 transition">
+      Save Airdrop Settings
+    </button>
+
+    <a href="/admin/dashboard" class="block bg-gray-700 hover:bg-gray-800 rounded-xl py-3 text-center font-bold transition mt-6">
+      Back to Admin Dashboard
+    </a>
+
+  </div>
+
+<script>
+  function saveSettings() {
+    const sends = document.getElementById('minSends').value;
+    const referral = document.getElementById('referralIncome').value;
+    const referrals = document.getElementById('activeReferrals').value;
+    const tasks = document.getElementById('taskEarnings').value;
+    const nft = document.getElementById('nftRequired').checked;
+
+    alert(`Airdrop Settings Updated:
+- Sends: ${sends}
+- Referral Income: ${referral}
+- Active Referrals: ${referrals}
+- Task Earnings: ${tasks}
+- NFT Required: ${nft ? 'Yes' : 'No'}`)
+
+    // API POST request to /admin/airdrop/settings/update can be triggered here
+  }
+</script>
+
+</body>
+</html>

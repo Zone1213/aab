@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leaderboard - FahamAI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glass {
+      background: rgba(18, 18, 30, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 15px rgba(150, 0, 255, 0.4);
+      backdrop-filter: blur(20px);
+    }
+  </style>
+</head>
+<body class="bg-[#0c0c1c] text-white font-sans min-h-screen flex flex-col items-center py-6">
+
+  <h1 class="text-xl font-bold neon-text mb-4">Leaderboard</h1>
+
+  <div class="mb-4">
+    <select id="categorySelect" class="bg-gray-800 text-white rounded px-4 py-2">
+      <option value="top_earners">Top Earners</option>
+      <option value="top_senders">Top Senders</option>
+      <option value="top_referrers">Top Referrers</option>
+      <option value="top_task">Top Task Complete</option>
+    </select>
+
+    <select id="timeframeSelect" class="bg-gray-800 text-white rounded px-4 py-2 ml-2">
+      <option value="today">Today</option>
+      <option value="week">This Week</option>
+      <option value="month">This Month</option>
+      <option value="all">All Time</option>
+    </select>
+  </div>
+
+  <div id="leaderboardContainer" class="glass rounded-2xl w-[360px] p-4 overflow-y-auto max-h-[500px]">
+    <div id="lastUpdated" class="text-xs text-gray-400 mb-3 text-center"></div>
+    <div id="leaderboardList"></div>
+  </div>
+
+  <script>
+    async function fetchLeaderboard() {
+      const category = document.getElementById('categorySelect').value;
+      const timeframe = document.getElementById('timeframeSelect').value;
+      const response = await fetch(`/api/leaderboard/${category}/${timeframe}`);
+      const data = await response.json();
+
+      document.getElementById('lastUpdated').innerText = 'Last updated: Last 30 minutes';
+
+      const container = document.getElementById('leaderboardList');
+      container.innerHTML = '';
+
+      data.forEach(user => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center mb-3';
+
+        row.innerHTML = `
+          <div class="w-8 text-center font-bold">${user.rank}</div>
+          <img src="${user.photo}" class="w-8 h-8 rounded-full mx-2">
+          <div class="flex-1 truncate">${user.username}</div>
+          <div class="font-bold text-green-400">${user.amount}</div>
+        `;
+
+        container.appendChild(row);
+      });
+    }
+
+    document.getElementById('categorySelect').addEventListener('change', fetchLeaderboard);
+    document.getElementById('timeframeSelect').addEventListener('change', fetchLeaderboard);
+
+    fetchLeaderboard();
+    setInterval(fetchLeaderboard, 1800000);  // Refresh every 30 mins
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tasks Control - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col items-center py-8">
+
+  <h1 class="text-xl font-bold text-purple-400 mb-4">Tasks Control</h1>
+
+  <div id="tasksContainer" class="w-[360px] space-y-4">
+    <!-- Tasks will be dynamically loaded here -->
+  </div>
+
+  <a href="/admin/dashboard" class="block bg-gray-700 hover:bg-gray-800 rounded-xl py-3 text-center font-bold transition mt-6 w-[360px]">
+    Back to Admin Dashboard
+  </a>
+
+<script>
+  const tasks = [
+    { id: 'task1', name: 'Daily Check-in', icon: 'checkin.png', active: true },
+    { id: 'task2', name: 'Twitter Follow', icon: 'twitter.png', active: false },
+    { id: 'task3', name: 'Referral Bonus', icon: 'referral.png', active: true }
+  ];
+
+  function loadTasks() {
+    const container = document.getElementById('tasksContainer');
+    container.innerHTML = '';
+
+    tasks.forEach(task => {
+      const html = `
+        <div class="bg-gray-800 rounded-xl p-4 space-y-2 border border-purple-700">
+          <div class="flex justify-between items-center">
+            <span class="font-bold">${task.name}</span>
+            <input type="checkbox" ${task.active ? 'checked' : ''} onchange="toggleTask('${task.id}')">
+          </div>
+          <div>
+            <label class="text-xs text-gray-400">Task Name:</label>
+            <input type="text" id="${task.id}-name" value="${task.name}" class="w-full px-3 py-1 rounded bg-gray-700 text-white">
+          </div>
+          <div>
+            <label class="text-xs text-gray-400">Icon PNG:</label>
+            <input type="text" id="${task.id}-icon" value="${task.icon}" class="w-full px-3 py-1 rounded bg-gray-700 text-white">
+          </div>
+          <button onclick="saveTask('${task.id}')" class="w-full bg-purple-700 rounded-xl py-2 font-bold hover:bg-purple-900 transition">
+            Save Task
+          </button>
+        </div>
+      `;
+      container.innerHTML += html;
+    });
+  }
+
+  function toggleTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    task.active = !task.active;
+    alert(`${task.name} is now ${task.active ? 'ACTIVE' : 'INACTIVE'}.`);
+  }
+
+  function saveTask(taskId) {
+    const nameInput = document.getElementById(`${taskId}-name`).value;
+    const iconInput = document.getElementById(`${taskId}-icon`).value;
+
+    const task = tasks.find(t => t.id === taskId);
+    task.name = nameInput;
+    task.icon = iconInput;
+
+    alert(`Task "${task.name}" updated successfully.`);
+  }
+
+  loadTasks();
+</script>
+
+</body>
+</html>
